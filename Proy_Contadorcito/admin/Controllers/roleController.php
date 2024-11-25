@@ -33,14 +33,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $html .= '<td>' . $row['roleName'] . '</td>';
                 $html .= '<td>' . $row['description'] . '</td>';
                 $html .= '<td>
-                    <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#updateModal" data-bs-id="' . $row['role_id'] . '"><i class="fa fa-edit"></i></a>
-                    <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-id="' . $row['role_id'] . '"><i class="fa fa-times"></i></a>
+                    <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#updateModal" data-bs-role_id="' . $row['role_id'] . '"><i class="fa fa-edit"></i></a>
+                    <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-role_id="' . $row['role_id'] . '"><i class="fa fa-times"></i></a>
                   </td>';
                 $html .= '</tr>';
             }
         } else {
             $html .= '<tr>';
-            $html .= '<td colspan="4">Sin resultados</td>';
+            $html .= '<td colspan="7">Sin resultados</td>';
             $html .= '</tr>';
         }
 
@@ -55,48 +55,83 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             echo json_encode($result);
         } else {
             header('Content-Type: application/json');
-            echo json_encode(['status' => 'error', 'message' => 'No se encontró el rol']);
+            echo "No se encontro el rol";
         }
         exit();
     }
 
     if ($action == "Create") {
-        $isRoleRegistered = $role->checkRole($role->role_name);
-        if ($isRoleRegistered > 0) {
+        $isRoleRegitered = $role->checkRole($role->role_name);
+        if ($isRoleRegitered > 0) {
             header('Content-Type: application/json');
-            echo json_encode(['status' => 'error', 'message' => 'El nombre de rol ya está en uso']);
+            echo json_encode([
+               'status' => 'error',
+               'message' => 'El nombre de rol ya esta en uso',
+                'data' => [
+                    'roleName' => $role->role_name,
+                    'description' => $role->description
+                ]
+            ]);
+            exit();
         } else {
+
             $result = $role->create();
             if ($result) {
-                echo json_encode(['status' => 'success', 'message' => 'Rol agregado con éxito']);
+                header('Content-Type: application/json');
+                echo json_encode([
+                   'status' => 'success',
+                   'message' => 'Rol agregado con exito'
+                ]);
             } else {
-                echo json_encode(['status' => 'error', 'message' => 'Error al agregar el rol']);
+                header('Content-Type: application/json');
+                echo json_encode([
+                   'status' => 'error',
+                   'message' => 'Error al agregar el rol'
+                ]);
             }
+            exit();
         }
-        exit();
     }
 
     if ($action == "Update") {
-        $isRoleRegistered = $role->checkRole($role->role_name, $role_id);
-        if ($isRoleRegistered > 0) {
-            echo json_encode(['status' => 'error', 'message' => 'El nombre de rol ya está en uso']);
+        $isRoleRegitered = $role->checkRole($role->role_name, $role_id);
+        if ($isRoleRegitered > 0) {
+            header('Content-Type: application/json');
+            echo json_encode([
+               'status' => 'error',
+               'message' => 'El nombre de rol ya esta en uso',
+                'data' => [
+                    'role_id' => $role_id,
+                    'roleName' => $role->role_name,
+                    'description' => $role->description
+                ]
+            ]);
+            exit();
         } else {
             $result = $role->update($role_id);
             if ($result) {
-                echo json_encode(['status' => 'success', 'message' => 'Rol actualizado con éxito']);
+                header('Content-Type: application/json');
+                echo json_encode([
+                   'status' => 'success',
+                   'message' => 'Rol actualizado con exito'
+                ]);
             } else {
-                echo json_encode(['status' => 'error', 'message' => 'Error al actualizar el rol']);
+                header('Content-Type: application/json');
+                echo json_encode([
+                   'status' => 'error',
+                   'message' => 'Error al actualizar el rol'
+                ]);
             }
+            exit();
         }
-        exit();
     }
 
     if ($action == "Delete") {
         $result = $role->delete($role_id);
         if ($result) {
-            echo json_encode(['status' => 'success', 'message' => 'Rol eliminado con éxito']);
+            echo "Rol eliminado con exito";
         } else {
-            echo json_encode(['status' => 'error', 'message' => 'Error al eliminar el rol']);
+            echo "Error al eliminar el rol";
         }
         exit();
     }

@@ -70,12 +70,12 @@ class Role extends Conf {
     }
 
     // Método para verificar si un rol ya existe
-    public function checkRole($role_name, $role_id = null) {
+    public function checkRole($role_name, $role_id=null) {
         $query = "SELECT COUNT(*) as total FROM roles WHERE roleName = :roleName";
         $params = [':roleName' => $role_name];
 
         if ($role_id) {
-            $query .= " AND role_id != :role_id";
+            $query .= "AND role_id != :role_id";
             $params[':role_id'] = $role_id;
         }
 

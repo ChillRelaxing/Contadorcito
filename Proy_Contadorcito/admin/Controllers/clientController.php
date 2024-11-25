@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $client->email = isset($_POST['email']) ? $_POST['email'] : '';
     $client->phone = isset($_POST['phone']) ? $_POST['phone'] : '';
 
-    $id = isset($_POST['id']) ? $_POST['id'] : '';
+    $id = isset($_POST['client_id']) ? $_POST['client_id'] : '';
     $action = isset($_POST['action']) ? $_POST['action'] : "";
 
     if ($action == "ListClients") {
@@ -30,15 +30,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (!empty($result)) {
             foreach ($result as $row) {
                 $html .= '<tr>';
-                $html .= '<td>' . $row['id'] . '</td>';
+                $html .= '<td>' . $row['client_id'] . '</td>';
                 $html .= '<td>' . $row['firstName'] . '</td>';
                 $html .= '<td>' . $row['lastName'] . '</td>';
                 $html .= '<td>' . $row['address'] . '</td>';
                 $html .= '<td>' . $row['email'] . '</td>';
                 $html .= '<td>' . $row['phone'] . '</td>';
                 $html .= '<td>
-                    <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#updateModal" data-bs-id="' . $row['id'] . '"><i class="fa fa-edit"></i></a>
-                    <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-id="' . $row['id'] . '"><i class="fa fa-times"></i></a>
+                    <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#updateModal" data-bs-id="' . $row['client_id'] . '"><i class="fa fa-edit"></i></a>
+                    <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-id="' . $row['client_id'] . '"><i class="fa fa-times"></i></a>
                   </td>';
                 $html .= '</tr>';
             }
@@ -104,7 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                'status' => 'error',
                'message' => 'El email del cliente ya esta en uso',
                 'data' => [
-                    'id' => $id,
+                    'client_id' => $id,
                     'email' => $client->email
                 ]
             ]);

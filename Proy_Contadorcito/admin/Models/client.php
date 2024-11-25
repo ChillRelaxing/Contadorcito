@@ -23,8 +23,8 @@ class Client extends Conf {
     }
 
     public function get_client_by_id($id) {
-        $query = "SELECT id, firstName, lastName, address, email, phone FROM clients WHERE id = :id";
-        $params = [':id' => $id];
+        $query = "SELECT client_id, firstName, lastName, address, email, phone FROM clients WHERE client_id = :client_id";
+        $params = [':client_id' => $id];
 
         $result = $this->exec_query($query, $params);
 
@@ -36,7 +36,7 @@ class Client extends Conf {
     }
 
     public function list_clients() {
-        $query = "SELECT id, firstName, lastName, address, email, phone FROM clients";
+        $query = "SELECT client_id, firstName, lastName, address, email, phone FROM clients";
 
         $result = $this->exec_query($query);
 
@@ -54,10 +54,10 @@ class Client extends Conf {
             address = :address,
             email = :email,
             phone = :phone 
-            WHERE id = :id";
+            WHERE client_id = :client_id";
 
         $params = [
-            ':id' => $id,
+            ':client_id' => $id,
             ':firstName' => $this->firstName,
             ':lastName' => $this->lastName,
             ':address' => $this->address,
@@ -69,8 +69,8 @@ class Client extends Conf {
     }
 
     public function delete($id) {
-        $query = "DELETE FROM clients WHERE id = :id";
-        $params = [':id' => $id];
+        $query = "DELETE FROM clients WHERE client_id = :client_id";
+        $params = [':client_id' => $id];
 
         return $this->exec_query($query, $params);
     }
@@ -80,8 +80,8 @@ class Client extends Conf {
         $params = [':email' => $email];
 
         if ($id) {
-            $query .= " AND id != :id";
-            $params[':id'] = $id;
+            $query .= " AND client_id != :client_id";
+            $params[':client_id'] = $id;
         }
 
         $result = $this->exec_query($query, $params);

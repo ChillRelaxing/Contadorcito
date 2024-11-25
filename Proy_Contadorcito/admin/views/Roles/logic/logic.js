@@ -85,7 +85,7 @@ $(document).ready(function() {
     // logica modal actualizar
     updateModal.addEventListener('shown.bs.modal', event => {
         let button = event.relatedTarget;
-        let role_id = button.getAttribute('data-bs-id')
+        let role_id = button.getAttribute('data-bs-role_id')
 
         let inputId = updateModal.querySelector('.modal-body #role_id')
         let inputRoleName = updateModal.querySelector('.modal-body #roleName')
@@ -156,7 +156,7 @@ $(document).ready(function() {
     // logica modal eliminar
     deleteModal.addEventListener('shown.bs.modal', event => {
         let button = event.relatedTarget
-        let role_id = button.getAttribute('data-bs-id')
+        let role_id = button.getAttribute('data-bs-role_id')
         deleteModal.querySelector('.modal-footer #role_id').value = role_id
     })
 
