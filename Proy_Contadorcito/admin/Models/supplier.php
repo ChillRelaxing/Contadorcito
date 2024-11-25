@@ -3,7 +3,7 @@ require_once(__DIR__ . '/../../conf/conf.php');
 
 
 class Supplier extends Conf {
-    public $id;
+    public $supplier_id;
     public $supplier_name;
     public $email;
     public $phone;
@@ -23,8 +23,8 @@ class Supplier extends Conf {
         return $this->exec_query($query, $params);
     }
 
-    public function get_supplier_by_id($id){
-        $query = "SELECT id, supplierName, email, phone, address, city FROM suppliers WHERE id = :id";
+    public function get_supplier_by_id($supplier_id){
+        $query = "SELECT supplier_id, supplierName, email, phone, address, city FROM suppliers WHERE id = :id";
         $params = [':id' => $id];
 
         $result = $this->exec_query($query, $params);
@@ -37,7 +37,7 @@ class Supplier extends Conf {
     }
 
     public function list_suppliers(){
-        $query = "SELECT id, supplierName, email, phone, address, city, created_at, updated_at FROM suppliers";
+        $query = "SELECT supplier_id, supplierName, email, phone, address, city, created_at, updated_at FROM suppliers";
 
         $result = $this->exec_query($query);
 
@@ -48,17 +48,17 @@ class Supplier extends Conf {
         }
     }
 
-    public function update($id){
+    public function update($supplier_id){
         $query = "UPDATE suppliers SET
             supplierName = :supplierName,
             email = :email,
             phone = :phone,
             address = :address,
             city = :city
-            WHERE id = :id";
+            WHERE supplier_id = :supplier_id";
 
         $params = [
-            ':id' => $id,
+            ':supplier_id' => $supplier_id,
             ':supplierName' => $this->supplier_name,
             ':email' => $this->email,
             ':phone' => $this->phone,
@@ -69,20 +69,20 @@ class Supplier extends Conf {
         return $this->exec_query($query,$params);
     }
 
-    public function delete($id){
-        $query = "DELETE FROM suppliers WHERE id = :id";
-        $params = [':id' => $id];
+    public function delete($supplier_id){
+        $query = "DELETE FROM suppliers WHERE supplier_id = :supplier_id";
+        $params = [':supplier_id' => $supplier_id];
 
         return $this->exec_query($query,$params);
     }
 
-    public function checkSupplier($id = null){
+    public function checkSupplier($supplier_id = null){
         $query = "SELECT COUNT(*) as total FROM suppliers WHERE supplierName = :supplierName";
         $params = [':supplierName' => $this->supplier_name];
 
-        if ($id){
-            $query.= " AND id != :id";
-            $params[':id'] = $id;
+        if ($supplier_id){
+            $query.= " AND supplier_id != :supplier_id";
+            $params[':supplier_id'] = $supplier_id;
         }
 
         $result = $this->exec_query($query, $params);

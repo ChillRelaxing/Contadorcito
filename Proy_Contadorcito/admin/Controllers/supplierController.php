@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $supplier->address = isset($_POST['address']) ? $_POST['address'] : '';
     $supplier->city = isset($_POST['city']) ? $_POST['city'] : '';
 
-    $id = isset($_POST['id']) ? $_POST['id'] : '';
+    $supplier_id = isset($_POST['id']) ? $_POST['id'] : '';
 
     $action = isset($_POST['action']) ? $_POST['action'] : "";
 
@@ -32,17 +32,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (!empty($result)) {
             foreach ($result as $row) {
                 $html .= '<tr>';
-                $html .= '<td>' . $row['id'] . '</td>';
+                $html .= '<td>' . $row['supplier_id'] . '</td>';
                 $html .= '<td>' . $row['supplierName'] . '</td>';
                 $html .= '<td>' . $row['email'] . '</td>';
+                $html .= '<td>' . $row['phone'] . '</td>';
                 $html .= '<td>' . $row['address'] . '</td>';
                 $html .= '<td>' . $row['city'] . '</td>';
-                $html .= '<td>' . $row['phone'] . '</td>';
                 $html.= '<td>' . $row['created_at'] . '</td>';
                 $html.= '<td>' . $row['updated_at'] . '</td>';
                 $html .= '<td>
-                    <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#updateModal" data-bs-id="' . $row['id'] . '"><i class="fa fa-edit"></i></a>
-                    <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-id="' . $row['id'] . '"><i class="fa fa-times"></i></a>
+                    <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#updateModal" data-bs-id="' . $row['supplier_id'] . '"><i class="fa fa-edit"></i></a>
+                    <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-id="' . $row['supplier_id'] . '"><i class="fa fa-times"></i></a>
                     </td>';
                 $html .= '</tr>';
             };
