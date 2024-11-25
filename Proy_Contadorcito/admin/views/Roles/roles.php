@@ -12,7 +12,7 @@ if ($_SESSION['user_role'] != 1) {
 
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Libreria</title>
+    <title>Contadorcito</title>
     <link rel="stylesheet" href="../assets/css/style.css">
     <meta
         content="width=device-width, initial-scale=1.0, shrink-to-fit=no"

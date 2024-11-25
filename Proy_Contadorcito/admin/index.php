@@ -12,7 +12,7 @@ if ($_SESSION['user_Name'] == "") {
 
 <head>
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Libreria</title>
+  <title>Contadorcito</title>
   <meta
     content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
     name="viewport" />
@@ -408,11 +408,11 @@ if ($_SESSION['user_Name'] == "") {
         <div class="container-fluid d-flex justify-content-between">
           <div class="copyright">
             2024, made with <i class=""></i> by
-            <a href="http://www.themekita.com">Book Master</a>
+            <a href="http://www.themekita.com">Contadorcito</a>
           </div>
           <div>
             Distributed by
-            <a target="_blank" href="https://themewagon.com/">Book Master</a>.
+            <a target="_blank" href="https://themewagon.com/">Contadorcito</a>.
           </div>
         </div>
       </footer>

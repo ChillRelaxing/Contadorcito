@@ -2,11 +2,11 @@
     <div class="container-fluid d-flex justify-content-between">
         <div class="copyright">
             2024, made with <i class=""></i> by
-            <a href="http://www.themekita.com">Book Master</a>
+            <a href="http://www.themekita.com">Contadorcito</a>
         </div>
         <div>
             Distributed by
-            <a target="_blank" href="https://themewagon.com/">Book Master</a>.
+            <a target="_blank" href="https://themewagon.com/">Contadorcito</a>.
         </div>
     </div>
 </footer>
