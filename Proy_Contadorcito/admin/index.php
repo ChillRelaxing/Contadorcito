@@ -117,7 +117,7 @@ if ($_SESSION['user_name'] == "") {
                 </a>
               </li>
               <li class="nav-item">
-                <a href="views/Inventory/inventoryIndex.php">
+                <a href="views/Companies/companies.php">
                   <i class="fas fa-users"></i>
                   <p>Empresas</p>
                 </a>
@@ -458,7 +458,7 @@ if ($_SESSION['user_name'] == "") {
               </div>
 
               <div class="col-sm-6 col-md-3">
-                <a href="views/Suppliers/suppliers.php">
+                <a href="views/Companies/companies.php">
                   <div class="card card-stats card-round">
                     <div class="card-body">
                       <div class="row align-items-center">

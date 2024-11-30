@@ -1,7 +1,8 @@
 <?php
 require_once(__DIR__ . '/../../conf/conf.php');
 
-class Company extends Conf {
+class Company extends Conf
+{
     public $id;
     public $company_name;
     public $company_type;
@@ -11,27 +12,33 @@ class Company extends Conf {
     public $representative;
 
     // Método para crear una nueva compañía
-    public function create() {
-        $query = "INSERT INTO company (company_name, company_type, address, phone, email, representative) 
-                  VALUES (:company_name, :company_type, :address, :phone, :email, :representative)";
-        $params = [
-            ':company_name' => $this->company_name,
-            ':company_type' => $this->company_type,
-            ':address' => $this->address,
-            ':phone' => $this->phone,
-            ':email' => $this->email,
-            ':representative' => $this->representative
-        ];
-
-        return $this->exec_query($query, $params);
+    public function create()
+    {
+        try {
+            $query = "INSERT INTO company (company_name, company_type, address, phone, email, representative) 
+                      VALUES (:company_name, :company_type, :address, :phone, :email, :representative)";
+            $params = [
+                ':company_name' => $this->company_name,
+                ':company_type' => $this->company_type,
+                ':address' => $this->address,
+                ':phone' => $this->phone,
+                ':email' => $this->email,
+                ':representative' => $this->representative
+            ];
+            return $this->exec_query($query, $params);
+        } catch (PDOException $e) {
+            error_log("Error en create(): " . $e->getMessage());
+            return false;
+        }
     }
 
     // Obtener una compañía por ID
-    public function get_company_by_id($id) {
-        $query = "SELECT company_id, company_name, company_type, address, phone, email, representative 
+    public function get_company_by_id($id)
+    {
+        $query = "SELECT id, company_name, company_type, address, phone, email, representative 
                   FROM company 
-                  WHERE company_id = :company_id";
-        $params = [':company_id' => $id];
+                  WHERE id = :id";
+        $params = [':id' => $id];
 
         $result = $this->exec_query($query, $params);
 
@@ -43,8 +50,9 @@ class Company extends Conf {
     }
 
     // Listar todas las compañías
-    public function list_companies() {
-        $query = "SELECT company_id, company_name, company_type, address, phone, email, representative FROM company";
+    public function list_companies()
+    {
+        $query = "SELECT id, company_name, company_type, address, phone, email, representative FROM company";
 
         $result = $this->exec_query($query);
 
@@ -56,7 +64,8 @@ class Company extends Conf {
     }
 
     // Actualizar información de una compañía
-    public function update($id) {
+    public function update($id)
+    {
         $query = "UPDATE company SET
                   company_name = :company_name,
                   company_type = :company_type,
@@ -64,10 +73,10 @@ class Company extends Conf {
                   phone = :phone,
                   email = :email,
                   representative = :representative
-                  WHERE company_id = :company_id";
+                  WHERE id = :id";
 
         $params = [
-            ':company_id' => $id,
+            ':id' => $id,
             ':company_name' => $this->company_name,
             ':company_type' => $this->company_type,
             ':address' => $this->address,
@@ -80,21 +89,23 @@ class Company extends Conf {
     }
 
     // Eliminar una compañía
-    public function delete($id) {
-        $query = "DELETE FROM company WHERE company_id = :company_id";
-        $params = [':company_id' => $id];
+    public function delete($id)
+    {
+        $query = "DELETE FROM company WHERE id = :id";
+        $params = [':id' => $id];
 
         return $this->exec_query($query, $params);
     }
 
     // Verificar si existe una compañía con el mismo email
-    public function checkCompany($email, $id = null) {
+    public function checkCompany($email, $id = null)
+    {
         $query = "SELECT COUNT(*) as total FROM company WHERE email = :email";
         $params = [':email' => $email];
 
         if ($id) {
-            $query .= " AND company_id != :company_id";
-            $params[':company_id'] = $id;
+            $query .= " AND id != :id";
+            $params[':id'] = $id;
         }
 
         $result = $this->exec_query($query, $params);

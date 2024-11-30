@@ -9,7 +9,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-require_once('../Models/Company.php');
+require_once('../Models/company.php');
 require_once('../../conf/funciones.php');
 
 $company = new Company();
@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $company->email = isset($_POST['email']) ? $_POST['email'] : '';
     $company->representative = isset($_POST['representative']) ? $_POST['representative'] : '';
 
-    $id = isset($_POST['company_id']) ? $_POST['company_id'] : '';
+    $id = isset($_POST['id']) ? $_POST['id'] : '';
     $action = isset($_POST['action']) ? $_POST['action'] : "";
 
     if ($action == "ListCompanies") {
@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (!empty($result)) {
             foreach ($result as $row) {
                 $html .= '<tr>';
-                $html .= '<td>' . $row['company_id'] . '</td>';
+                $html .= '<td>' . $row['id'] . '</td>';
                 $html .= '<td>' . $row['company_name'] . '</td>';
                 $html .= '<td>' . $row['company_type'] . '</td>';
                 $html .= '<td>' . $row['address'] . '</td>';
@@ -40,8 +40,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $html .= '<td>' . $row['email'] . '</td>';
                 $html .= '<td>' . $row['representative'] . '</td>';
                 $html .= '<td>
-                    <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#updateModal" data-bs-id="' . $row['company_id'] . '"><i class="fa fa-edit"></i></a>
-                    <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-id="' . $row['company_id'] . '"><i class="fa fa-times"></i></a>
+                    <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#updateModal" data-bs-id="' . $row['id'] . '"><i class="fa fa-edit"></i></a>
+                    <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-id="' . $row['id'] . '"><i class="fa fa-times"></i></a>
                   </td>';
                 $html .= '</tr>';
             }
