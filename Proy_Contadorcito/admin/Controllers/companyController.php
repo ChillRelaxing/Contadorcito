@@ -72,14 +72,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($result) {
             header('Content-Type: application/json');
             echo json_encode([
-               'status' => 'success',
-               'message' => 'Compañía agregada con éxito'
+                'status' => 'success',
+                'message' => 'Compañía agregada con éxito'
             ]);
         } else {
             header('Content-Type: application/json');
             echo json_encode([
-               'status' => 'error',
-               'message' => 'Error al agregar la compañía'
+                'status' => 'error',
+                'message' => 'Error al agregar la compañía'
             ]);
         }
         exit();
@@ -90,14 +90,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($result) {
             header('Content-Type: application/json');
             echo json_encode([
-               'status' => 'success',
-               'message' => 'Compañía actualizada con éxito'
+                'status' => 'success',
+                'message' => 'Compañía actualizada con éxito'
             ]);
         } else {
             header('Content-Type: application/json');
             echo json_encode([
-               'status' => 'error',
-               'message' => 'Error al actualizar la compañía'
+                'status' => 'error',
+                'message' => 'Error al actualizar la compañía'
             ]);
         }
         exit();
@@ -113,4 +113,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit();
     }
 }
-?>
