@@ -87,7 +87,7 @@ $(document).ready(function() {
         let button = event.relatedTarget;
         let id = button.getAttribute('data-bs-id');
 
-        let inputId = updateModal.querySelector('.modal-body #client_id');
+        let inputId = updateModal.querySelector('.modal-body #id');
         let inputFirstName = updateModal.querySelector('.modal-body #firstName');
         let inputLastName = updateModal.querySelector('.modal-body #lastName');
         let inputAddress = updateModal.querySelector('.modal-body #address');
@@ -98,7 +98,7 @@ $(document).ready(function() {
         let url = "../../Controllers/clientController.php";
 
         let formData = new FormData();
-        formData.append('client_id', id);
+        formData.append('id', id);
         formData.append('action', action);
 
         fetch(url, {
@@ -162,7 +162,7 @@ $(document).ready(function() {
     deleteModal.addEventListener('shown.bs.modal', event => {
         let button = event.relatedTarget;
         let id = button.getAttribute('data-bs-id');
-        deleteModal.querySelector('.modal-footer #client_id').value = id;
+        deleteModal.querySelector('.modal-footer #id').value = id;
     });
 
     deleteModal.addEventListener('submit', event => {

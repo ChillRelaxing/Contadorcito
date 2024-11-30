@@ -11,7 +11,7 @@ require_once(__DIR__ . '/admin/Models/user.php');
 $user = new User();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $user_name = isset($_POST['userName']) ? $_POST['userName'] : "";
+    $user_name = isset($_POST['user_name']) ? $_POST['user_name'] : "";
     $password = isset($_POST['password']) ? $_POST['password'] : "";
 
     if (hasEmptyField([$user_name, $password])) {
@@ -21,11 +21,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if (!empty($userData)) {
             session_start();
-            $_SESSION['user_firstName'] = $userData['firstName'];
-            $_SESSION['user_id'] = $userData['user_id'];
+            $_SESSION['user'] = $userData['firstName'];
+            $_SESSION['user_id'] = $userData['id'];
             $_SESSION['user_role'] = $userData['role_id'];
             $_SESSION['user_email'] = $userData['email'];
-            $_SESSION['user_Name'] = $userData['userName'];
+            $_SESSION['user_name'] = $userData['userName'];
             header("Location: admin/index.php");
         } else {
             $error = "Contraseña o usuario incorrectos";
@@ -87,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <div class="p-4 pb-1 my-4 mb-2 mx-3">
                         <div class="d-flex align-items-center justify-content-between mb-3">
                             <a href="" class="">
-                                <h3 class="text-primary"><i class="fa fa-solid fa-swatchbook me-2"></i>Book Master</h3>
+                                <h3 class="text-primary"><i class="fa fa-solid fa-swatchbook me-2"></i>Contadorcito SA de CV</h3>
                             </a>
                         </div>
                         <div class="form-group mb-3">
@@ -98,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                               placeholder="Usuario"
                               aria-label="Username"
                               aria-describedby="basic-addon1"
-                              name="userName"
+                              name="user_name"
                             />
                           </div>
                         <div class="form-group">

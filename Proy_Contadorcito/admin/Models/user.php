@@ -2,13 +2,13 @@
 require_once(__DIR__ . '/../../conf/conf.php');
 
 class User extends Conf {
-    public $user_id;
+    public $id;
 
-    public $firstName;
+    public $first_name;
 
-    public $lastName;
+    public $last_name;
 
-    public $userName;
+    public $user_name;
 
     public $email;
 
@@ -19,10 +19,10 @@ class User extends Conf {
     public $role_id;
  
 
-    public function get_user($userName, $password){
-        $query = "SELECT A.user_id, A.firstName, A.lastName, A.userName, A.email, B.roleName , A.phone, A.role_id FROM users AS A INNER JOIN roles AS B 
-        ON A.role_id = B.role_id WHERE A.userName=:userName && A.password=:password";
-        $params = [':userName' => $userName,
+    public function get_user($user_name, $password){
+        $query = "SELECT A.id, firstName, lastName, userName, email, roleName , phone, role_id FROM users AS A INNER JOIN roles AS B 
+        ON A.role_id = B.id WHERE userName=:userName && password=:password";
+        $params = [':userName' => $user_name,
                     ':password' => md5($password)
         ];
 
@@ -36,7 +36,7 @@ class User extends Conf {
     }
 
     public function list_roles(){
-        $query = "SELECT role_id, roleName FROM roles";
+        $query = "SELECT id, roleName FROM roles";
 
         $result = $this->exec_query($query);
 
@@ -50,9 +50,9 @@ class User extends Conf {
     public function create(){
         $query = "INSERT INTO users (firstName, lastName, userName, email, phone, password, role_id) VALUES (:firstName, :lastName, :userName, :email, :phone, :password, :role_id)";
         $params = [
-            ':firstName' => $this->firstName,
-            ':lastName' => $this->lastName,
-            ':userName' => $this->userName,
+            ':firstName' => $this->first_name,
+            ':lastName' => $this->last_name,
+            ':userName' => $this->user_name,
             ':email' => $this->email,
             ':phone' => $this->phone,
             ':password' => $this->password,
@@ -62,9 +62,9 @@ class User extends Conf {
         return $this->exec_query($query, $params);
     }
 
-    public function get_user_by_id($user_id){
-        $query = "SELECT user_id, firstName, lastName, userName, email, phone, role_id FROM users WHERE user_id = :user_id";
-        $params = [':user_id' => $user_id];
+    public function get_user_by_id($id){
+        $query = "SELECT id, firstName, lastName, userName, email, phone, role_id FROM users WHERE id = :id";
+        $params = [':id' => $id];
 
         $result = $this->exec_query($query, $params);
 
@@ -77,8 +77,8 @@ class User extends Conf {
 
 
     public function list_users(){
-        $query = "SELECT A.user_id, A.firstName, A.lastName, A.userName, B.roleName, A.email, A.phone, A.created_at, A.updated_at FROM users AS A INNER JOIN roles AS B 
-        ON A.role_id = B.role_id";
+        $query = "SELECT A.id, firstName, lastName, userName, roleName, email, phone, A.created_at, A.updated_at FROM users AS A INNER JOIN roles AS B 
+        ON A.role_id = B.id";
 
         $result = $this->exec_query($query);
 
@@ -89,7 +89,7 @@ class User extends Conf {
         }
     }
 
-    public function update($user_id){
+    public function update($id){
         $query = "UPDATE users SET
             firstName = :firstName,
             lastName = :lastName, 
@@ -97,13 +97,13 @@ class User extends Conf {
             email = :email,
             phone = :phone,
             role_id = :role_id
-            WHERE user_id = :user_id";
+            WHERE id = :id";
 
         $params = [
-            ':user_id' => $user_id,
-            ':firstName' => $this->firstName,
-            ':lastName' => $this->lastName,
-            ':userName' => $this->userName,
+            ':id' => $id,
+            ':firstName' => $this->first_name,
+            ':lastName' => $this->last_name,
+            ':userName' => $this->user_name,
             ':email' => $this->email,
             ':phone' => $this->phone,
             ':role_id' => $this->role_id
@@ -113,13 +113,13 @@ class User extends Conf {
 
     }
 
-    public function checkUser($userName, $email, $user_id  = null){
-        if ($user_id  == null){
+    public function checkUser($user_name, $email, $id = null){
+        if ($id == null){
             $query = "SELECT COUNT(*) AS total FROM users WHERE userName = :userName OR email = :email";
-            $params = [':userName' => $userName, ':email' => $email];
+            $params = [':userName' => $user_name, ':email' => $email];
         } else {
-            $query = "SELECT COUNT(*) AS total FROM users WHERE (userName = :userName OR email = :email) AND user_id != :user_id";
-            $params = [':userName' => $userName, ':email' => $email, ':user_id' => $user_id];
+            $query = "SELECT COUNT(*) AS total FROM users WHERE (userName = :userName OR email = :email) AND id != :id";
+            $params = [':userName' => $user_name, ':email' => $email, ':id' => $id];
         }
 
         $result = $this->exec_query($query, $params);
@@ -131,9 +131,9 @@ class User extends Conf {
         }
     }
 
-    public function delete($user_id){
-        $query = "DELETE FROM users WHERE user_id = :user_id";
-        $params = [':user_id' => $user_id];
+    public function delete($id){
+        $query = "DELETE FROM users WHERE id = :id";
+        $params = [':id' => $id];
 
         return $this->exec_query($query,$params);
     }

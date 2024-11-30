@@ -43,8 +43,8 @@
                             class="avatar-img rounded-circle" />
                     </div>
                     <span class="profile-username">
-                        <span class="op-7">Hola,</span>
-                        <span class="fw-bold"><?= $_SESSION['user_firstName'] ?></span>
+                        <span class="op-7">Hi,</span>
+                        <span class="fw-bold"><?= $_SESSION['user'] ?></span>
                     </span>
                 </a>
                 <ul class="dropdown-menu dropdown-user animated fadeIn">
@@ -52,13 +52,13 @@
                         <li>
                             <div class="user-box">
                                 <div class="u-text">
-                                    <h4><?= $_SESSION['user_firstName'] ?></h4>
+                                    <h4><?= $_SESSION['user'] ?></h4>
                                     <p class="text-muted"><?= $_SESSION['user_email'] ?></p>
                                 </div>
                             </div>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="../../logout.php">Cerrar sesion</a>
+                            <a class="dropdown-item" href="../../logout.php">Logout</a>
                         </li>
                     </div>
                 </ul>

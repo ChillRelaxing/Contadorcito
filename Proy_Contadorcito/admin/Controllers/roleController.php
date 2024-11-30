@@ -1,10 +1,9 @@
 <?php
 session_start();
-if ($_SESSION['userName'] == "") {
+if ($_SESSION['user_name'] == "") {
     header("Location: ../../index.php");
     exit();
 }
-
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -16,9 +15,10 @@ $role = new Role();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $role->role_name = isset($_POST['roleName']) ? $_POST['roleName'] : '';
-    $role->description = isset($_POST['description']) ? $_POST['description'] : '';
+    $role->description = isset($_POST['description']) ? ($_POST['description']) : '';
 
-    $role_id = isset($_POST['role_id']) ? $_POST['role_id'] : '';
+    $id = isset($_POST['id']) ? $_POST['id'] : '';
+
     $action = isset($_POST['action']) ? $_POST['action'] : "";
 
     if ($action == "ListRoles") {
@@ -29,12 +29,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (!empty($result)) {
             foreach ($result as $row) {
                 $html .= '<tr>';
-                $html .= '<td>' . $row['role_id'] . '</td>';
+                $html .= '<td>' . $row['id'] . '</td>';
                 $html .= '<td>' . $row['roleName'] . '</td>';
                 $html .= '<td>' . $row['description'] . '</td>';
                 $html .= '<td>
-                    <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#updateModal" data-bs-role_id="' . $row['role_id'] . '"><i class="fa fa-edit"></i></a>
-                    <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-role_id="' . $row['role_id'] . '"><i class="fa fa-times"></i></a>
+                    <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#updateModal" data-bs-id="' . $row['id'] . '"><i class="fa fa-edit"></i></a>
+                    <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-id="' . $row['id'] . '"><i class="fa fa-times"></i></a>
                   </td>';
                 $html .= '</tr>';
             }
@@ -49,13 +49,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if ($action == "GetRoleById") {
-        $result = $role->get_role_by_id($role_id);
+        $result = $role->get_role_by_id($id);
         if ($result) {
             header('Content-Type: application/json');
             echo json_encode($result);
         } else {
             header('Content-Type: application/json');
-            echo "No se encontro el rol";
+            echo "No se encontró el rol";
         }
         exit();
     }
@@ -94,21 +94,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if ($action == "Update") {
-        $isRoleRegitered = $role->checkRole($role->role_name, $role_id);
+        $isRoleRegitered = $role->checkRole($role->role_name, $id);
         if ($isRoleRegitered > 0) {
             header('Content-Type: application/json');
             echo json_encode([
                'status' => 'error',
                'message' => 'El nombre de rol ya esta en uso',
                 'data' => [
-                    'role_id' => $role_id,
+                    'id' => $id,
                     'roleName' => $role->role_name,
                     'description' => $role->description
                 ]
             ]);
             exit();
         } else {
-            $result = $role->update($role_id);
+            $result = $role->update($id);
             if ($result) {
                 header('Content-Type: application/json');
                 echo json_encode([
@@ -127,7 +127,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if ($action == "Delete") {
-        $result = $role->delete($role_id);
+        $result = $role->delete($id);
         if ($result) {
             echo "Rol eliminado con exito";
         } else {

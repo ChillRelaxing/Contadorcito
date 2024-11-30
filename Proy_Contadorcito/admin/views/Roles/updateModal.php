@@ -8,7 +8,7 @@
             </div>
             <div class="modal-body">
                 <form action="" method="post" enctype="multipart/form-data">
-                    <input type="text" name="role_id" id="role_id" hidden>
+                    <input type="text" name="id" id="id" hidden>
                     <div class="mb-3">
                         <label for="roleName" class="form-label">Nombre del Rol: </label>
                         <input type="text" name="roleName" id="roleName" class="form-control" required>
@@ -31,4 +31,3 @@
         </div>
     </div>
 </div>
-

@@ -85,9 +85,9 @@ $(document).ready(function() {
     // logica modal actualizar
     updateModal.addEventListener('shown.bs.modal', event => {
         let button = event.relatedTarget;
-        let role_id = button.getAttribute('data-bs-role_id')
+        let id = button.getAttribute('data-bs-id')
 
-        let inputId = updateModal.querySelector('.modal-body #role_id')
+        let inputId = updateModal.querySelector('.modal-body #id')
         let inputRoleName = updateModal.querySelector('.modal-body #roleName')
         let inputDescription = updateModal.querySelector('.modal-body #description')
 
@@ -95,7 +95,7 @@ $(document).ready(function() {
         let url = "../../Controllers/roleController.php"
 
         let formData = new FormData()
-        formData.append('role_id', role_id)
+        formData.append('id', id)
         formData.append('action', action)
 
         fetch(url, {
@@ -109,7 +109,7 @@ $(document).ready(function() {
                 }
             })
             .then(data => {
-                inputId.value = data.role_id || '';
+                inputId.value = data.id || '';
                 inputRoleName.value = data.roleName || '';
                 inputDescription.value = data.description || '';
             }).catch(error => {
@@ -156,8 +156,8 @@ $(document).ready(function() {
     // logica modal eliminar
     deleteModal.addEventListener('shown.bs.modal', event => {
         let button = event.relatedTarget
-        let role_id = button.getAttribute('data-bs-role_id')
-        deleteModal.querySelector('.modal-footer #role_id').value = role_id
+        let id = button.getAttribute('data-bs-id')
+        deleteModal.querySelector('.modal-footer #id').value = id
     })
 
     deleteModal.addEventListener('submit', event => {
@@ -209,4 +209,3 @@ $(document).ready(function() {
 
     }
 })
-

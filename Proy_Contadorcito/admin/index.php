@@ -1,6 +1,6 @@
 <?php
 session_start();
-if ($_SESSION['user_Name'] == "") {
+if ($_SESSION['user_name'] == "") {
   header("Location: ../index.php");
   exit();
 }
@@ -12,7 +12,7 @@ if ($_SESSION['user_Name'] == "") {
 
 <head>
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Contadorcito</title>
+  <title>Contadorcito SA de CV</title>
   <meta
     content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
     name="viewport" />
@@ -118,15 +118,27 @@ if ($_SESSION['user_Name'] == "") {
               </li>
               <li class="nav-item">
                 <a href="views/Inventory/inventoryIndex.php">
+                  <i class="fas fa-users"></i>
+                  <p>Empresas</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="views/purchase_receipts/purchase_receipts.php">
                   <i class="fas fa-warehouse"></i>
-                  <p>Inventario</p>
+                  <p>Comprobantes de compras</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="views/Inventory/inventoryIndex.php">
+                  <i class="fas fa-briefcase"></i>
+                  <p>Comprobantes de ventas</p>
                 </a>
               </li>
             <?php }?>
             <li class="nav-item">
                 <a href="views/Sales/sales.php">
-                  <i class="fas fa-box-open"></i>
-                  <p>Ventas</p>
+                <i class="fas fa-warehouse"></i>
+                <p>Reportes</p>
                 </a>
               </li>
           </ul>
@@ -209,8 +221,8 @@ if ($_SESSION['user_Name'] == "") {
                       class="avatar-img rounded-circle" />
                   </div>
                   <span class="profile-username">
-                    <span class="op-7">Hola,</span>
-                    <span class="fw-bold"><?= $_SESSION['user_firstName'] ?></span>
+                    <span class="op-7">Hi,</span>
+                    <span class="fw-bold"><?= $_SESSION['user'] ?></span>
                   </span>
                 </a>
                 <ul class="dropdown-menu dropdown-user animated fadeIn">
@@ -219,7 +231,7 @@ if ($_SESSION['user_Name'] == "") {
                       <div class="user-box">
                         
                         <div class="u-text">
-                          <h4><?= $_SESSION['user_firstName'] ?></h4>
+                          <h4><?= $_SESSION['user'] ?></h4>
                           <p class="text-muted"><?= $_SESSION['user_email'] ?></p>
                         </div>
                       </div>
@@ -241,25 +253,26 @@ if ($_SESSION['user_Name'] == "") {
           <div
             class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
             <div>
-              <h3 class="fw-bold mb-3">Bienvenido <?= $_SESSION['user_firstName'] ?></h3>
+              <h3 class="fw-bold mb-3">Bienvenido <?= $_SESSION['user'] ?></h3>
             </div>
           </div>
 
           <div class="row">
             <?php if ($_SESSION['user_role'] != 1) { ?>
+
               <div class="col-sm-6 col-md-3">
-                <a href="views/Sales/sales.php">
+                <a href="views/Clients/clients.php">
                   <div class="card card-stats card-round">
                     <div class="card-body">
                       <div class="row align-items-center">
                         <div class="col-icon">
-                          <div class="icon-big text-center icon-danger bubble-shadow-small">
-                            <i class="fas fa-briefcase"></i>
+                          <div class="icon-big text-center icon-warning bubble-shadow-small">
+                            <i class="fas fa-users"></i>
                           </div>
                         </div>
                         <div class="col col-stats ms-3 ms-sm-0">
                           <div class="numbers">
-                            <p class="card-category">Ventas</p>
+                            <p class="card-category">Clientes</p>
                             <h4 class="card-title"></h4>
                           </div>
                         </div>
@@ -268,6 +281,95 @@ if ($_SESSION['user_Name'] == "") {
                   </div>
                 </a>
               </div>
+
+              <div class="col-sm-6 col-md-3">
+                <a href="views/Suppliers/suppliers.php">
+                  <div class="card card-stats card-round">
+                    <div class="card-body">
+                      <div class="row align-items-center">
+                        <div class="col-icon">
+                          <div class="icon-big text-center icon-info bubble-shadow-small">
+                            <i class="fas fa-truck"></i>
+                          </div>
+                        </div>
+                        <div class="col col-stats ms-3 ms-sm-0">
+                          <div class="numbers">
+                            <p class="card-category">Proveedores</p>
+                            <h4 class="card-title"></h4>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+
+              <div class="col-sm-6 col-md-3">
+                <a href="views/purchase_receipts/purchase_receipts.php">
+                  <div class="card card-stats card-round">
+                    <div class="card-body">
+                      <div class="row align-items-center">
+                        <div class="col-icon">
+                          <div class="icon-big text-center icon-secondary bubble-shadow-small">
+                            <i class="fas fa-warehouse"></i>
+                          </div>
+                        </div>
+                        <div class="col col-stats ms-3 ms-sm-0">
+                          <div class="numbers">
+                            <p class="card-category">Comprobantes de Compras</p>
+                            <h4 class="card-title"></h4>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+
+              <div class="col-sm-6 col-md-3">
+                <a href="views/Sales/sales.php">
+                  <div class="card card-stats card-round">
+                    <div class="card-body">
+                      <div class="row align-items-center">
+                        <div class="col-icon">
+                          <div class="icon-big text-center icon-success bubble-shadow-small">
+                            <i class="fas fa-briefcase"></i>
+                          </div>
+                        </div>
+                        <div class="col col-stats ms-3 ms-sm-0">
+                          <div class="numbers">
+                            <p class="card-category">Comprobantes de Ventas</p>
+                            <h4 class="card-title"></h4>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+
+              <div class="col-sm-6 col-md-3">
+                <a href="views/Suppliers/suppliers.php">
+                  <div class="card card-stats card-round">
+                    <div class="card-body">
+                      <div class="row align-items-center">
+                        <div class="col-icon">
+                          <div class="icon-big text-center  bubble-shadow-small">
+                          <i class="fas fa-warehouse"></i>
+                          </div>
+                        </div>
+                        <div class="col col-stats ms-3 ms-sm-0">
+                          <div class="numbers">
+                            <p class="card-category">Reportes</p>
+                            <h4 class="card-title"></h4>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+
             <?php } else { ?>
               <div class="col-sm-6 col-md-3">
                 <a href="views/Users/users.php">
@@ -356,7 +458,29 @@ if ($_SESSION['user_Name'] == "") {
               </div>
 
               <div class="col-sm-6 col-md-3">
-                <a href="views/Inventory/inventoryIndex.php">
+                <a href="views/Suppliers/suppliers.php">
+                  <div class="card card-stats card-round">
+                    <div class="card-body">
+                      <div class="row align-items-center">
+                        <div class="col-icon">
+                          <div class="icon-big text-center icon-info bubble-shadow-small">
+                          <i class="fas fa-users"></i>
+                          </div>
+                        </div>
+                        <div class="col col-stats ms-3 ms-sm-0">
+                          <div class="numbers">
+                            <p class="card-category">Empresa</p>
+                            <h4 class="card-title"></h4>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+
+              <div class="col-sm-6 col-md-3">
+                <a href="views/purchase_receipts/purchase_receipts.php">
                   <div class="card card-stats card-round">
                     <div class="card-body">
                       <div class="row align-items-center">
@@ -367,7 +491,7 @@ if ($_SESSION['user_Name'] == "") {
                         </div>
                         <div class="col col-stats ms-3 ms-sm-0">
                           <div class="numbers">
-                            <p class="card-category">Inventario</p>
+                            <p class="card-category">Comprobantes de Compras</p>
                             <h4 class="card-title"></h4>
                           </div>
                         </div>
@@ -389,7 +513,29 @@ if ($_SESSION['user_Name'] == "") {
                         </div>
                         <div class="col col-stats ms-3 ms-sm-0">
                           <div class="numbers">
-                            <p class="card-category">Ventas</p>
+                            <p class="card-category">Comprobantes de Ventas</p>
+                            <h4 class="card-title"></h4>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+
+              <div class="col-sm-6 col-md-3">
+                <a href="views/Suppliers/suppliers.php">
+                  <div class="card card-stats card-round">
+                    <div class="card-body">
+                      <div class="row align-items-center">
+                        <div class="col-icon">
+                          <div class="icon-big text-center  bubble-shadow-small">
+                          <i class="fas fa-warehouse"></i>
+                          </div>
+                        </div>
+                        <div class="col col-stats ms-3 ms-sm-0">
+                          <div class="numbers">
+                            <p class="card-category">Reportes</p>
                             <h4 class="card-title"></h4>
                           </div>
                         </div>

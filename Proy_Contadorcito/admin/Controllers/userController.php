@@ -1,6 +1,6 @@
 <?php
 session_start();
-if ($_SESSION['userName'] == "") {
+if ($_SESSION['user_name'] == "") {
     header("Location: ../../index.php");
     exit();
 }
@@ -14,15 +14,15 @@ require_once('../../conf/funciones.php');
 $user = new User();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $user->firstName = isset($_POST['firstName']) ? $_POST['firstName'] : '';
-    $user->lastName = isset($_POST['lastName']) ? $_POST['lastName'] : '';
-    $user->userName = isset($_POST['userName']) ? ($_POST['userName']) : '';
+    $user->first_name = isset($_POST['firstName']) ? $_POST['firstName'] : '';
+    $user->last_name = isset($_POST['lastName']) ? $_POST['lastName'] : '';
+    $user->user_name = isset($_POST['userName']) ? ($_POST['userName']) : '';
     $user->email = isset($_POST['email']) ? $_POST['email'] : '';
     $user->phone = isset($_POST['phone']) ? intval($_POST['phone']) : '';
     $user->password = isset($_POST['password']) ?  md5($_POST['password']) : '';
     $user->role_id = isset($_POST['role_id']) ? $_POST['role_id'] : '';
 
-    $user_id = isset($_POST['user_id']) ? $_POST['user_id'] : '';
+    $id = isset($_POST['id']) ? $_POST['id'] : '';
 
     $action = isset($_POST['action']) ? $_POST['action'] : "";
 
@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (!empty($result)) {
             foreach ($result as $row) {
                 $html .= '<tr>';
-                $html .= '<td>' . $row['user_id'] . '</td>';
+                $html .= '<td>' . $row['id'] . '</td>';
                 $html .= '<td>' . $row['firstName'] . '</td>';
                 $html .= '<td>' . $row['lastName'] . '</td>';
                 $html .= '<td>' . $row['userName'] . '</td>';
@@ -49,8 +49,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $html .= '<td>' . $row['created_at'] . '</td>';
                 $html .= '<td>' . $row['updated_at'] . '</td>';
                 $html .= '<td>
-                    <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#updateModal" data-bs-id="' . $row['user_id'] . '"><i class="fa fa-edit"></i></a>
-                    <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-id="' . $row['user_id'] . '"><i class="fa fa-times"></i></a>
+                    <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#updateModal" data-bs-id="' . $row['id'] . '"><i class="fa fa-edit"></i></a>
+                    <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-id="' . $row['id'] . '"><i class="fa fa-times"></i></a>
                   </td>';
                 $html .= '</tr>';
             }
@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if ($action == "GetUserById") {
-        $result = $user->get_user_by_id($user_id);
+        $result = $user->get_user_by_id($id);
         if ($result) {
             header('Content-Type: application/json');
             echo json_encode($result);
@@ -77,16 +77,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if ($action == "Create") {
-        $isUserRegitered = $user->checkUser($user->userName, $user->email);
+        $isUserRegitered = $user->checkUser($user->user_name, $user->email);
         if ($isUserRegitered > 0) {
             header('Content-Type: application/json');
             echo json_encode([
                 'status' => 'error',
                 'message' => 'El nombre de usuario o correo electronico ya esta en uso',
                 'data' => [
-                    'firstName' => $user->firstName,
-                    'lastName' => $user->lastName,
-                    'userName' => $user->userName,
+                    'firstName' => $user->first_name,
+                    'lastName' => $user->last_name,
+                    'userName' => $user->user_name,
                     'email' => $user->email,
                     'phone' => $user->phone,
                     'password' => "",
@@ -112,17 +112,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if ($action == "Update") {
-        $isUserRegitered = $user->checkUser($user->userName, $user->email, $user_id);
+        $isUserRegitered = $user->checkUser($user->user_name, $user->email, $id);
         if ($isUserRegitered > 0) {
             header('Content-Type: application/json');
             echo json_encode([
                 'status' => 'error',
                 'message' => 'El nombre de usuario o correo electronico ya esta en uso',
                 'data' => [
-                    'user_id' => $user_id,
-                    'firstName' => $user->firstName,
-                    'lastName' => $user->lastName,
-                    'userName' => $user->userName,
+                    'id' => $id,
+                    'firstName' => $user->first_name,
+                    'lastName' => $user->last_name,
+                    'userName' => $user->user_name,
                     'email' => $user->email,
                     'phone' => $user->phone,
                     'role_id' => $user->role_id
@@ -130,7 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ]);
             exit();
         } else {
-            $result = $user->update($user_id);
+            $result = $user->update($id);
             if ($result) {
                 echo json_encode([
                     'status' =>'success',
@@ -147,7 +147,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if ($action == "Delete") {
-        $result = $user->delete($user_id);
+        $result = $user->delete($id);
         if ($result) {
             echo "Usuario eliminado con exito";
         } else {
