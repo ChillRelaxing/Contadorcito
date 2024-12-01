@@ -10,6 +10,31 @@ class Report extends Conf {
     public $company_id;
     public $user_id;
 
+
+    public function list_company(){
+        $query = "SELECT id, company_name FROM company";
+
+        $result = $this->exec_query($query);
+
+        if ($result){
+            return $result->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            return [];
+        }
+    }
+
+    public function list_users(){
+        $query = "SELECT id, roleName FROM roles";
+
+        $result = $this->exec_query($query);
+
+        if ($result){
+            return $result->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            return [];
+        }
+    }
+
     // Crear un nuevo reporte
     public function create() {
         $query = "INSERT INTO reports (report_type, start_date, end_date, status, company_id, user_id) 
@@ -28,10 +53,10 @@ class Report extends Conf {
 
     // Obtener un reporte por ID
     public function get_report_by_id($id) {
-        $query = "SELECT report_id, report_type, start_date, end_date, status, company_id, user_id 
+        $query = "SELECT id, report_type, start_date, end_date, status, company_id, user_id 
                   FROM reports 
-                  WHERE report_id = :report_id";
-        $params = [':report_id' => $id];
+                  WHERE id = :id";
+        $params = [':id' => $id];
 
         $result = $this->exec_query($query, $params);
 
@@ -44,8 +69,10 @@ class Report extends Conf {
 
     // Listar todos los reportes
     public function list_reports() {
-        $query = "SELECT report_id, report_type, start_date, end_date, status, company_id, user_id 
-                  FROM reports";
+        $query = "SELECT r.id, r.report_type, r.start_date, r.end_date, r.status, c.company_name, u.firstName 
+                  FROM reports r
+                  INNER JOIN company c ON r.company_id = c.id
+                  INNER JOIN users u ON r.user_id = u.id";
 
         $result = $this->exec_query($query);
 
@@ -65,10 +92,10 @@ class Report extends Conf {
                   status = :status,
                   company_id = :company_id,
                   user_id = :user_id
-                  WHERE report_id = :report_id";
+                  WHERE id = :id";
 
         $params = [
-            ':report_id' => $id,
+            ':id' => $id,
             ':report_type' => $this->report_type,
             ':start_date' => $this->start_date,
             ':end_date' => $this->end_date,
@@ -82,12 +109,17 @@ class Report extends Conf {
 
     // Eliminar un reporte
     public function delete($id) {
-        $query = "DELETE FROM reports WHERE report_id = :report_id";
-        $params = [':report_id' => $id];
+        $query = "DELETE FROM reports WHERE id = :id";
+        $params = [':id' => $id];
 
         return $this->exec_query($query, $params);
     }
 
+
+
+
+
+    
     // Verificar si existe un reporte en un rango de fechas específico para una compañía
     public function check_report($company_id, $start_date, $end_date, $report_id = null) {
         $query = "SELECT COUNT(*) as total FROM reports 

@@ -80,7 +80,7 @@
                     </a>
                     </li>
                 <li class="nav-item">
-                    <a href="../Sales/sales.php">
+                    <a href="../Reports/reports.php">
                         <i class="fas fa-box-open"></i>
                         <p>Reportes</p>
                     </a>

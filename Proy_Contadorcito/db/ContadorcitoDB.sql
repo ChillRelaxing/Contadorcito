@@ -146,6 +146,13 @@ VALUES
     ('Juan', 'Pérez', 'Calle Falsa 123', 'juan.perez@example.com', '5551234567'),
     ('Ana', 'López', 'Avenida Central 456', 'ana.lopez@example.com', '5559876543');
     
+-- Insertar datos iniciales en reports
+INSERT INTO reports (report_type, start_date, end_date, status, company_id, user_id) 
+VALUES 
+    ('Ventas', '2024-11-01', '2024-11-30', 'Generado', 1, 1),
+    ('Compras', '2024-11-15', '2024-11-20', 'Pendiente', 2, 2);
+    
+    
 SELECT * FROM roles;
 SELECT * FROM users;
 SELECT * FROM suppliers;

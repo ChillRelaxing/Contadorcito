@@ -9,7 +9,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-require_once('../Models/Report.php');
+require_once('../Models/reports.php');
 require_once('../../conf/funciones.php');
 
 $report = new Report();
@@ -22,8 +22,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $report->company_id = isset($_POST['company_id']) ? $_POST['company_id'] : '';
     $report->user_id = isset($_POST['user_id']) ? $_POST['user_id'] : '';
 
-    $id = isset($_POST['report_id']) ? $_POST['report_id'] : '';
+    $id = isset($_POST['id']) ? $_POST['id'] : '';
     $action = isset($_POST['action']) ? $_POST['action'] : "";
+
+    if ($action == "GetCompanys") {
+        $company_list = $report->list_company();
+        echo json_encode($company_list);
+    }
+
+    if ($action == "GetUsers") {
+        $users_list = $report->list_users();
+        echo json_encode($users_list);
+    }
 
     if ($action == "ListReports") {
         $result = $report->list_reports();
@@ -32,16 +42,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (!empty($result)) {
             foreach ($result as $row) {
                 $html .= '<tr>';
-                $html .= '<td>' . $row['report_id'] . '</td>';
+                $html .= '<td>' . $row['id'] . '</td>';
                 $html .= '<td>' . $row['report_type'] . '</td>';
                 $html .= '<td>' . $row['start_date'] . '</td>';
                 $html .= '<td>' . $row['end_date'] . '</td>';
                 $html .= '<td>' . $row['status'] . '</td>';
-                $html .= '<td>' . $row['company_id'] . '</td>';
-                $html .= '<td>' . $row['user_id'] . '</td>';
+                $html .= '<td>' . $row['company_name'] . '</td>';
+                $html .= '<td>' . $row['firstName'] . '</td>';
                 $html .= '<td>
-                    <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#updateModal" data-bs-id="' . $row['report_id'] . '"><i class="fa fa-edit"></i></a>
-                    <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-id="' . $row['report_id'] . '"><i class="fa fa-times"></i></a>
+                    <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#updateModal" data-bs-id="' . $row['id'] . '"><i class="fa fa-edit"></i></a>
+                    <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-id="' . $row['id'] . '"><i class="fa fa-times"></i></a>
                   </td>';
                 $html .= '</tr>';
             }
