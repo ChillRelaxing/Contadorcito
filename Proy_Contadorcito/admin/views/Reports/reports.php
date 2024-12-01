@@ -97,7 +97,7 @@ if ($_SESSION['user_role'] != 1) {
                             <div class="card">
                                 <div class="card-header">
                                     <div class="d-flex align-items-center justify-content-between">
-                                        <h4 class="card-title">Listado de Usuarios</h4>
+                                        <h4 class="card-title">Listado de reportes</h4>
                                         <button
                                             class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createModal">
                                             <i class="fa fa-plus"></i>
@@ -118,7 +118,7 @@ if ($_SESSION['user_role'] != 1) {
                                                     <th>Fecha de inicio</th>
                                                     <th>Fecha final</th>
                                                     <th>Estatus</th>
-                                                    <th>Nombre de Compañia</th>
+                                                    <th>Nombre de empresa</th>
                                                     <th>Nombre de usuario</th>
                                                     <th>Action</th>
                                                 </tr>
@@ -130,7 +130,7 @@ if ($_SESSION['user_role'] != 1) {
                                                     <th>Fecha de inicio</th>
                                                     <th>Fecha final</th>
                                                     <th>Estatus</th>
-                                                    <th>Nombre de Compañia</th>
+                                                    <th>Nombre de empresa</th>
                                                     <th>Nombre de usuario</th>
                                                     <th>Action</th>
                                                 </tr>

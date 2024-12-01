@@ -8,6 +8,7 @@
             </div>
             <div class="modal-body">
                 <form action="" method="post" enctype="multipart/form-data">
+                    
                     <div class="mb-3">
                         <label for="company_name" class="form-label">Nombre: </label>
                         <input type="text" name="company_name" id="company_name" class="form-control" required>
