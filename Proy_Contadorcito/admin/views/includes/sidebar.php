@@ -60,7 +60,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="../Inventory/inventoryIndex.php">
+                        <a href="../Companies/companies.php">
                             <i class="fas fa-warehouse"></i>
                             <p>empresa</p>
                         </a>

@@ -129,7 +129,7 @@ if ($_SESSION['user_name'] == "") {
                 </a>
               </li>
               <li class="nav-item">
-                <a href="views/Inventory/inventoryIndex.php">
+                <a href="views/Inventory/inventoryInd.php">
                   <i class="fas fa-briefcase"></i>
                   <p>Comprobantes de ventas</p>
                 </a>
