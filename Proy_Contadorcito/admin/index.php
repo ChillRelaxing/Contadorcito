@@ -129,7 +129,7 @@ if ($_SESSION['user_name'] == "") {
                 </a>
               </li>
               <li class="nav-item">
-                <a href="views/Inventory/inventoryInd.php">
+                <a href="views/Sales_receipts/sales_receipts.php">
                   <i class="fas fa-briefcase"></i>
                   <p>Comprobantes de ventas</p>
                 </a>
@@ -327,7 +327,7 @@ if ($_SESSION['user_name'] == "") {
               </div>
 
               <div class="col-sm-6 col-md-3">
-                <a href="views/Sales/sales.php">
+                <a href="views/Sales_receipts/sales_receipts.php">
                   <div class="card card-stats card-round">
                     <div class="card-body">
                       <div class="row align-items-center">
@@ -502,7 +502,7 @@ if ($_SESSION['user_name'] == "") {
               </div>
 
               <div class="col-sm-6 col-md-3">
-                <a href="views/Sales/sales.php">
+                <a href="views/Sales_receipts/sales_receipts.php">
                   <div class="card card-stats card-round">
                     <div class="card-body">
                       <div class="row align-items-center">

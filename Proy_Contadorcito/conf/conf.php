@@ -10,7 +10,7 @@ class Conf {
     public function __construct() {
         $this->server = 'localhost';
         $this->user = 'root';
-        $this->password = '1234';
+        $this->password = '';
         $this->db = 'ContadorcitoDB';
         $this->connect();
     }

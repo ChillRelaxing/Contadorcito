@@ -1,79 +1,137 @@
 <?php
-require_once(__DIR__ . '/../../conf/conf.php');
+session_start();
+if ($_SESSION['user_name'] == "") {
+    header("Location: ../../index.php");
+    exit();
+}
 
-class PurchaseReceipt extends Conf {
-    public $receipt_id;
-    public $receiptType;
-    public $purchase_date;
-    public $total;
-    public $pdf_path;
-    public $json_path;
-    public $supplier_id;
-    public $user_id;
-    public $company_id;
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-    public function create() {
-        $query = "INSERT INTO purchase_receipts (receiptType, purchase_date, total, pdf_path, json_path, supplier_id, user_id, company_id) 
-                  VALUES (:receiptType, :purchase_date, :total, :pdf_path, :json_path, :supplier_id, :user_id, :company_id)";
-        $params = [
-            ':receiptType' => $this->receiptType,
-            ':purchase_date' => $this->purchase_date,
-            ':total' => $this->total,
-            ':pdf_path' => $this->pdf_path,
-            ':json_path' => $this->json_path,
-            ':supplier_id' => $this->supplier_id,
-            ':user_id' => $this->user_id,
-            ':company_id' => $this->company_id
-        ];
+require_once('../Models/purchase_receipt.php');
+require_once('../../conf/funciones.php');
 
-        return $this->exec_query($query, $params);
+$receipt = new PurchaseReceipt();
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $receipt->receiptType = isset($_POST['receiptType']) ? $_POST['receiptType'] : '';
+    $receipt->purchase_date = isset($_POST['purchase_date']) ? $_POST['purchase_date'] : '';
+    $receipt->total = isset($_POST['total']) ? $_POST['total'] : '';
+    $receipt->pdf_path = isset($_POST['pdf_path']) ? $_POST['pdf_path'] : '';
+    $receipt->json_path = isset($_POST['json_path']) ? $_POST['json_path'] : '';
+    $receipt->supplier_id = isset($_POST['supplier_id']) ? $_POST['supplier_id'] : '';
+    $receipt->user_id = isset($_POST['user_id']) ? $_POST['user_id'] : '';
+    $receipt->company_id = isset($_POST['company_id']) ? $_POST['company_id'] : '';
+
+    $id = isset($_POST['id']) ? $_POST['id'] : '';
+    $action = isset($_POST['action']) ? $_POST['action'] : "";
+
+    if ($action == "GetCompanys") {
+        $company_list = $receipt->list_companies();
+        echo json_encode($company_list);
     }
 
-    public function get_receipt_by_id($receipt_id) {
-        $query = "SELECT * FROM purchase_receipts WHERE receipt_id = :receipt_id";
-        $params = [':receipt_id' => $receipt_id];
-
-        $result = $this->exec_query($query, $params);
-        return $result ? $result->fetch(PDO::FETCH_ASSOC) : [];
+    if ($action == "GetSuppliers") {
+        $suppliers_list = $receipt->list_suppliers();
+        echo json_encode($suppliers_list);
     }
 
-    public function list_receipts() {
-        $query = "SELECT * FROM purchase_receipts";
-        $result = $this->exec_query($query);
-        return $result ? $result->fetchAll(PDO::FETCH_ASSOC) : [];
+    if ($action == "GetUsers") {
+        $users_list = $receipt->list_users();
+        echo json_encode($users_list);
     }
 
-    public function update($receipt_id) {
-        $query = "UPDATE purchase_receipts SET
-                    receiptType = :receiptType,
-                    purchase_date = :purchase_date,
-                    total = :total,
-                    pdf_path = :pdf_path,
-                    json_path = :json_path,
-                    supplier_id = :supplier_id,
-                    user_id = :user_id,
-                    company_id = :company_id
-                  WHERE receipt_id = :receipt_id";
+    if ($action == "ListReceipts") {
+        $result = $receipt->list_receipts();
+        $html = '';
 
-        $params = [
-            ':receipt_id' => $receipt_id,
-            ':receiptType' => $this->receiptType,
-            ':purchase_date' => $this->purchase_date,
-            ':total' => $this->total,
-            ':pdf_path' => $this->pdf_path,
-            ':json_path' => $this->json_path,
-            ':supplier_id' => $this->supplier_id,
-            ':user_id' => $this->user_id,
-            ':company_id' => $this->company_id
-        ];
+        if (!empty($result)) {
+            foreach ($result as $row) {
+                $html .= '<tr>';
+                $html .= '<td>' . $row['id'] . '</td>';
+                $html .= '<td>' . $row['receiptType'] . '</td>';
+                $html .= '<td>' . $row['purchase_date'] . '</td>';
+                $html .= '<td>' . $row['total'] . '</td>';
+                $html .= '<td>' . $row['pdf_path'] . '</td>';
+                $html .= '<td>' . $row['json_path'] . '</td>';
+                $html .= '<td>' . $row['supplierName'] . '</td>';
+                $html .= '<td>' . $row['firstName'] . '</td>';
+                $html .= '<td>' . $row['company_name'] . '</td>';
+                $html .= '<td>' . $row['created_at'] . '</td>';
+                $html .= '<td>' . $row['updated_at'] . '</td>';
+                $html .= '<td>
+                    <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#updateModal" data-bs-id="' . $row['id'] . '"><i class="fa fa-edit"></i></a>
+                    <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-id="' . $row['id'] . '"><i class="fa fa-times"></i></a>
+                  </td>';
+                $html .= '</tr>';
+            }
+        } else {
+            $html .= '<tr>';
+            $html .= '<td colspan="8">Sin resultados</td>';
+            $html .= '</tr>';
+        }
 
-        return $this->exec_query($query, $params);
+        echo $html;
+        exit();
     }
 
-    public function delete($receipt_id) {
-        $query = "DELETE FROM purchase_receipts WHERE receipt_id = :receipt_id";
-        $params = [':receipt_id' => $receipt_id];
-        return $this->exec_query($query, $params);
+    if ($action == "GetReceiptById") {
+        $result = $receipt->get_receipt_by_id($id);
+        if ($result) {
+            header('Content-Type: application/json');
+            echo json_encode($result);
+        } else {
+            header('Content-Type: application/json');
+            echo "No se encontró el recibo de compra";
+        }
+        exit();
+    }
+
+    if ($action == "Create") {
+        $result = $receipt->create();
+        if ($result) {
+            header('Content-Type: application/json');
+            echo json_encode([
+               'status' => 'success',
+               'message' => 'Recibo de compra agregado con éxito'
+            ]);
+        } else {
+            header('Content-Type: application/json');
+            echo json_encode([
+               'status' => 'error',
+               'message' => 'Error al agregar el recibo de compra'
+            ]);
+        }
+        exit();
+    }
+
+    if ($action == "Update") {
+        $result = $receipt->update($id);
+        if ($result) {
+            header('Content-Type: application/json');
+            echo json_encode([
+               'status' => 'success',
+               'message' => 'Recibo de compra actualizado con éxito'
+            ]);
+        } else {
+            header('Content-Type: application/json');
+            echo json_encode([
+               'status' => 'error',
+               'message' => 'Error al actualizar el recibo de compra'
+            ]);
+        }
+        exit();
+    }
+
+    if ($action == "Delete") {
+        $result = $receipt->delete($id);
+        if ($result) {
+            echo "Recibo de compra eliminado con éxito";
+        } else {
+            echo "Error al eliminar el recibo de compra";
+        }
+        exit();
     }
 }
 ?>

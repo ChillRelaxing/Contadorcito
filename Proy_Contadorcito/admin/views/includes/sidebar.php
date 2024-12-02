@@ -62,23 +62,23 @@
                     <li class="nav-item">
                         <a href="../Companies/companies.php">
                             <i class="fas fa-warehouse"></i>
-                            <p>empresa</p>
+                            <p>Empresa</p>
                         </a>
                     </li>
                     
                 <?php } ?>
                 <li class="nav-item">
-                    <a href="../purchase_receipts/purchase_receipts.php">
+                    <a href="../Purchase_receipts/purchase_receipts.php">
                         <i class="fas fa-warehouse"></i>
                         <p>Comprobantes de compras</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="../Inventory/inventoryIndex.php">
+                    <a href="../Sales_receipts/sales_receipts.php">
                         <i class="fas fa-warehouse"></i>
                         <p>Comprobantes de ventas</p>
                     </a>
-                    </li>
+                </li>
                 <li class="nav-item">
                     <a href="../Reports/reports.php">
                         <i class="fas fa-box-open"></i>

@@ -1,120 +1,164 @@
 <?php
-session_start();
-if ($_SESSION['user_name'] == "") {
-    header("Location: ../../index.php");
-    exit();
-}
+require_once(__DIR__ . '/../../conf/conf.php');
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+class SalesReceiptNew extends Conf {
+    public $id;
+    public $receiptType;
+    public $sale_date;
+    public $total;
+    public $pdf_path;
+    public $json_path;
+    public $client_id;
+    public $user_id;
+    public $company_id;
 
-require_once('../Models/SalesReceipt.php');
-require_once('../../conf/funciones.php');
+    // Listar compañías
+    public function list_companies() {
+        $query = "SELECT id, company_name FROM company";
 
-$salesReceipt = new SalesReceipt();
+        $result = $this->exec_query($query);
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $salesReceipt->receiptType = isset($_POST['receiptType']) ? $_POST['receiptType'] : '';
-    $salesReceipt->sale_date = isset($_POST['sale_date']) ? $_POST['sale_date'] : '';
-    $salesReceipt->total = isset($_POST['total']) ? $_POST['total'] : 0;
-    $salesReceipt->pdf_path = isset($_POST['pdf_path']) ? $_POST['pdf_path'] : '';
-    $salesReceipt->json_path = isset($_POST['json_path']) ? $_POST['json_path'] : '';
-    $salesReceipt->client_id = isset($_POST['client_id']) ? $_POST['client_id'] : '';
-    $salesReceipt->user_id = isset($_POST['user_id']) ? $_POST['user_id'] : '';
-    $salesReceipt->company_id = isset($_POST['company_id']) ? $_POST['company_id'] : '';
-
-    $id = isset($_POST['sale_receipt_id']) ? $_POST['sale_receipt_id'] : '';
-    $action = isset($_POST['action']) ? $_POST['action'] : "";
-
-    if ($action == "ListReceipts") {
-        $result = $salesReceipt->list_receipts();
-        $html = '';
-
-        if (!empty($result)) {
-            foreach ($result as $row) {
-                $html .= '<tr>';
-                $html .= '<td>' . $row['sale_receipt_id'] . '</td>';
-                $html .= '<td>' . $row['receiptType'] . '</td>';
-                $html .= '<td>' . $row['sale_date'] . '</td>';
-                $html .= '<td>' . $row['total'] . '</td>';
-                $html .= '<td>' . $row['pdf_path'] . '</td>';
-                $html .= '<td>' . $row['json_path'] . '</td>';
-                $html .= '<td>' . $row['client_id'] . '</td>';
-                $html .= '<td>' . $row['user_id'] . '</td>';
-                $html .= '<td>' . $row['company_id'] . '</td>';
-                $html .= '<td>
-                    <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#updateModal" data-bs-id="' . $row['sale_receipt_id'] . '"><i class="fa fa-edit"></i></a>
-                    <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-id="' . $row['sale_receipt_id'] . '"><i class="fa fa-times"></i></a>
-                  </td>';
-                $html .= '</tr>';
-            }
+        if ($result) {
+            return $result->fetchAll(PDO::FETCH_ASSOC);
         } else {
-            $html .= '<tr>';
-            $html .= '<td colspan="10">Sin resultados</td>';
-            $html .= '</tr>';
+            return [];
         }
-
-        echo $html;
-        exit();
     }
 
-    if ($action == "GetReceiptById") {
-        $result = $salesReceipt->get_receipt_by_id($id);
+    // Listar clientes
+    public function list_clients() {
+        $query = "SELECT id, client_name FROM clients";
+
+        $result = $this->exec_query($query);
+
         if ($result) {
-            header('Content-Type: application/json');
-            echo json_encode($result);
+            return $result->fetchAll(PDO::FETCH_ASSOC);
         } else {
-            header('Content-Type: application/json');
-            echo "No se encontró el recibo de venta";
+            return [];
         }
-        exit();
     }
 
-    if ($action == "Create") {
-        $result = $salesReceipt->create();
+    // Listar usuarios
+    public function list_users() {
+        $query = "SELECT id, firstName FROM users";
+
+        $result = $this->exec_query($query);
+
         if ($result) {
-            header('Content-Type: application/json');
-            echo json_encode([
-               'status' => 'success',
-               'message' => 'Recibo de venta agregado con éxito'
-            ]);
+            return $result->fetchAll(PDO::FETCH_ASSOC);
         } else {
-            header('Content-Type: application/json');
-            echo json_encode([
-               'status' => 'error',
-               'message' => 'Error al agregar el recibo de venta'
-            ]);
+            return [];
         }
-        exit();
     }
 
-    if ($action == "Update") {
-        $result = $salesReceipt->update($id);
-        if ($result) {
-            header('Content-Type: application/json');
-            echo json_encode([
-               'status' => 'success',
-               'message' => 'Recibo de venta actualizado con éxito'
-            ]);
-        } else {
-            header('Content-Type: application/json');
-            echo json_encode([
-               'status' => 'error',
-               'message' => 'Error al actualizar el recibo de venta'
-            ]);
-        }
-        exit();
+    // Crear un nuevo recibo de venta
+    public function create() {
+        $query = "INSERT INTO sales_receipts (receiptType, sale_date, total, pdf_path, json_path, client_id, user_id, company_id) 
+                  VALUES (:receiptType, :sale_date, :total, :pdf_path, :json_path, :client_id, :user_id, :company_id)";
+        $params = [
+            ':receiptType' => $this->receiptType,
+            ':sale_date' => $this->sale_date,
+            ':total' => $this->total,
+            ':pdf_path' => $this->pdf_path,
+            ':json_path' => $this->json_path,
+            ':client_id' => $this->client_id,
+            ':user_id' => $this->user_id,
+            ':company_id' => $this->company_id
+        ];
+
+        return $this->exec_query($query, $params);
     }
 
-    if ($action == "Delete") {
-        $result = $salesReceipt->delete($id);
+    // Obtener un recibo de venta por ID
+    public function get_receipt_by_id($id) {
+        $query = "SELECT id, receiptType, sale_date, total, pdf_path, json_path, client_id, user_id, company_id 
+                  FROM sales_receipts 
+                  WHERE id = :id";
+        $params = [':id' => $id];
+
+        $result = $this->exec_query($query, $params);
+
         if ($result) {
-            echo "Recibo de venta eliminado con éxito";
+            return $result->fetch(PDO::FETCH_ASSOC);
         } else {
-            echo "Error al eliminar el recibo de venta";
+            return [];
         }
-        exit();
+    }
+
+    // Listar todos los recibos de venta
+    public function list_receipts() {
+        $query = "SELECT sr.id, sr.receiptType, sr.sale_date, sr.total, sr.pdf_path, sr.json_path, c.client_name, u.firstName, co.company_name, sr.created_at, sr.updated_at
+                  FROM sales_receipts sr
+                  INNER JOIN clients c ON sr.client_id = c.id
+                  INNER JOIN users u ON sr.user_id = u.id
+                  INNER JOIN company co ON sr.company_id = co.id";
+
+        $result = $this->exec_query($query);
+
+        if ($result) {
+            return $result->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            return [];
+        }
+    }
+
+    // Actualizar un recibo de venta
+    public function update($id) {
+        $query = "UPDATE sales_receipts SET
+                  receiptType = :receiptType,
+                  sale_date = :sale_date,
+                  total = :total,
+                  pdf_path = :pdf_path,
+                  json_path = :json_path,
+                  client_id = :client_id,
+                  user_id = :user_id,
+                  company_id = :company_id
+                  WHERE id = :id";
+
+        $params = [
+            ':id' => $id,
+            ':receiptType' => $this->receiptType,
+            ':sale_date' => $this->sale_date,
+            ':total' => $this->total,
+            ':pdf_path' => $this->pdf_path,
+            ':json_path' => $this->json_path,
+            ':client_id' => $this->client_id,
+            ':user_id' => $this->user_id,
+            ':company_id' => $this->company_id
+        ];
+
+        return $this->exec_query($query, $params);
+    }
+
+    // Eliminar un recibo de venta
+    public function delete($id) {
+        $query = "DELETE FROM sales_receipts WHERE id = :id";
+        $params = [':id' => $id];
+
+        return $this->exec_query($query, $params);
+    }
+
+    // Verificar si existe un recibo de venta para una compañía y fecha específica
+    public function check_receipt($company_id, $sale_date, $receipt_id = null) {
+        $query = "SELECT COUNT(*) as total FROM sales_receipts 
+                  WHERE company_id = :company_id AND sale_date = :sale_date";
+        $params = [
+            ':company_id' => $company_id,
+            ':sale_date' => $sale_date
+        ];
+
+        if ($receipt_id) {
+            $query .= " AND id != :receipt_id";
+            $params[':receipt_id'] = $receipt_id;
+        }
+
+        $result = $this->exec_query($query, $params);
+
+        if ($result) {
+            return $result->fetch(PDO::FETCH_ASSOC)['total'];
+        } else {
+            return 0;
+        }
     }
 }
 ?>
