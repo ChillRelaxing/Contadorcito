@@ -24,7 +24,7 @@ class Report extends Conf {
     }
 
     public function list_users(){
-        $query = "SELECT id, roleName FROM roles";
+        $query = "SELECT id, firstName FROM users";
 
         $result = $this->exec_query($query);
 

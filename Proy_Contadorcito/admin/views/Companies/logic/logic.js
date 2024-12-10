@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
     getData();
 
     /* Función para cargar los datos con AJAX */
@@ -14,10 +14,10 @@ $(document).ready(function() {
         formData.append('action', 'ListCompanies');
 
         fetch(url, {
-                method: "POST",
-                body: formData,
-                cache: "no-store"
-            })
+            method: "POST",
+            body: formData,
+            cache: "no-store"
+        })
             .then(response => response.text())
             .then(html => {
                 content.innerHTML = html;
@@ -56,9 +56,9 @@ $(document).ready(function() {
         let url = "../../Controllers/companyController.php";
 
         fetch(url, {
-                method: "POST",
-                body: formData
-            }).then(response => response.json())
+            method: "POST",
+            body: formData
+        }).then(response => response.json())
             .then(data => {
                 if (data.status == 'error') {
                     createModal.querySelector('.modal-body #errorMessage').innerText = data.message;
@@ -84,17 +84,18 @@ $(document).ready(function() {
 
     });
 
+
     // lógica modal actualizar
     updateModal.addEventListener('shown.bs.modal', event => {
         let button = event.relatedTarget;
         let id = button.getAttribute('data-bs-id');
 
         let inputId = updateModal.querySelector('.modal-body #id');
-        let inputFirstName = updateModal.querySelector('.modal-body #company_name');
-        let inputLastName = updateModal.querySelector('.modal-body #company_type');
+        let inputCompanyName = updateModal.querySelector('.modal-body #company_name');
+        let inputCompanyType = updateModal.querySelector('.modal-body #company_type');
         let inputAddress = updateModal.querySelector('.modal-body #address');
-        let inputEmail = updateModal.querySelector('.modal-body #phone');
-        let inputPhone = updateModal.querySelector('.modal-body #email');
+        let inputPhone = updateModal.querySelector('.modal-body #phone');
+        let inputEmail = updateModal.querySelector('.modal-body #email');
         let inputRepresentative = updateModal.querySelector('.modal-body #representative');
 
         let action = "GetCompanyById";
@@ -105,29 +106,31 @@ $(document).ready(function() {
         formData.append('action', action);
 
         fetch(url, {
-                method: "POST",
-                body: formData
-            }).then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error('Error al obtener los datos');
-                }
-            })
+            method: "POST",
+            body: formData
+        }).then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Error al obtener los datos');
+            }
+        })
             .then(data => {
                 inputId.value = data.id || '';
-                inputFirstName.value = data.firstName || '';
-                inputLastName.value = data.lastName || '';
+                inputCompanyName.value = data.company_name || '';  // Changed from firstName
+                inputCompanyType.value = data.company_type || '';  // Changed from lastName
                 inputAddress.value = data.address || '';
-                inputEmail.value = data.email || '';
                 inputPhone.value = data.phone || '';
+                inputEmail.value = data.email || '';
                 inputRepresentative.value = data.representative || '';
-
             }).catch(error => {
                 console.error('Error:', error);
             });
     });
 
+
+
+    
     updateModal.addEventListener('submit', event => {
         event.preventDefault();
 
@@ -136,15 +139,15 @@ $(document).ready(function() {
         formData.append('action', 'Update');
 
         fetch(url, {
-                method: "POST",
-                body: formData
-            }).then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error('Error al obtener los datos');
-                }
-            })
+            method: "POST",
+            body: formData
+        }).then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Error al obtener los datos');
+            }
+        })
             .then(data => {
                 if (data.status == 'error') {
                     updateModal.querySelector(".modal-body #errorMessage").innerText = data.message;

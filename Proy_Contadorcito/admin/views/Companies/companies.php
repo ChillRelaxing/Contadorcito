@@ -97,7 +97,7 @@ if ($_SESSION['user_role'] != 1) {
                             <div class="card">
                                 <div class="card-header">
                                     <div class="d-flex align-items-center justify-content-between">
-                                        <h4 class="card-title">Listado de Clientes</h4>
+                                        <h4 class="card-title">Listado de Empresas</h4>
                                         <button
                                             class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createModal">
                                             <i class="fa fa-plus"></i>

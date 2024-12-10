@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
     getData();
 
     /* Función para cargar los datos de la tabla con AJAX */
@@ -14,10 +14,10 @@ $(document).ready(function() {
         formData.append('action', 'ListReports');
 
         fetch(url, {
-                method: "POST",
-                body: formData,
-                cache: "no-store"
-            })
+            method: "POST",
+            body: formData,
+            cache: "no-store"
+        })
             .then(response => response.text())
             .then(html => {
                 content.innerHTML = html;
@@ -63,9 +63,9 @@ $(document).ready(function() {
         bootstrapModal.hide();
 
         fetch(url, {
-                method: "POST",
-                body: formData,
-            })
+            method: "POST",
+            body: formData,
+        })
             .then((response) => {
                 if (response.ok) {
                     return response.text();
@@ -81,33 +81,30 @@ $(document).ready(function() {
 
     createModal.addEventListener("shown.bs.modal", (event) => {
         createModal.querySelector(".modal-body #report_type").focus();
-    });
 
-    createModal.addEventListener("submit", (event) => {
-        event.preventDefault();
-
-        let action = "Create";
-
-        let formData = new FormData(event.target);
-        formData.append("action", action);
-
+        // Fetch and populate users
         let url = "../../Controllers/reportsController.php";
+        let formData = new FormData();
+        formData.append('action', 'GetUsers');
 
         fetch(url, {
-                method: "POST",
-                body: formData,
+            method: "POST",
+            body: formData,
+            cache: "no-store"
+        })
+            .then(response => response.json())
+            .then(users => {
+                let userSelect = createModal.querySelector(".modal-body #user_id");
+                userSelect.innerHTML = '<option value="">Seleccione un usuario</option>';
+                users.forEach(user => {
+                    let option = document.createElement('option');
+                    option.value = user.id;
+                    option.textContent = user.firstName;
+                    userSelect.appendChild(option);
+                });
             })
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.status == 'error') {
-                    createModal.querySelector(".modal-body #errorMessage").innerText = data.message;
-                } else if (data.status == 'success') {
-                    var bootstrapModal = bootstrap.Modal.getInstance(createModal);
-                    bootstrapModal.hide();
-
-                    getData();
-                    showAlert(data.message);
-                }
+            .catch(error => {
+                console.error("Error fetching users:", error);
             });
     });
 
@@ -146,9 +143,9 @@ $(document).ready(function() {
         formData.append("action", action);
 
         fetch(url, {
-                method: "POST",
-                body: formData,
-            })
+            method: "POST",
+            body: formData,
+        })
             .then((response) => {
                 if (response.ok) {
                     return response.json();
@@ -179,9 +176,9 @@ $(document).ready(function() {
         formData.append("action", action);
 
         fetch(url, {
-                method: "POST",
-                body: formData,
-            })
+            method: "POST",
+            body: formData,
+        })
             .then((response) => {
                 if (response.ok) {
                     return response.json();
@@ -190,9 +187,9 @@ $(document).ready(function() {
                 }
             })
             .then((data) => {
-                if (data.status == 'error'){
+                if (data.status == 'error') {
                     updateModal.querySelector(".modal-body #errorMessage").innerText = data.message;
-                } else if (data.status == 'success'){
+                } else if (data.status == 'success') {
                     var bootstrapModal = bootstrap.Modal.getInstance(updateModal);
                     bootstrapModal.hide();
 
