@@ -35,14 +35,14 @@
                     </select>
 
                     <div class="mb-3">
-                        <label for="company_id">empresa: </label>
+                        <label for="company_id">empresa:</label>
                         <select class="form-select form-control" name="company_id" id="company_id" required>
                             <option value="">Seleccione una empresa</option>
                         </select>
                     </div>
 
                     <div class="mb-3">
-                        <label for="user_id">usuario: </label>
+                        <label for="user_id">usuario:</label>
                         <select class="form-select form-control" name="user_id" id="user_id" required>
                             <option value="">Seleccione un usuario</option>
                         </select>
