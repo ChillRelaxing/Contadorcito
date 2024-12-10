@@ -62,23 +62,20 @@ CREATE TABLE company (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
--- company_id
-
 -- Tabla para comprobantes de compras
 CREATE TABLE purchase_receipts (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    receipt_id INT AUTO_INCREMENT PRIMARY KEY,
     receiptType ENUM('Crédito Fiscal', 'Consumidor Final') NOT NULL,
+	receiptNumber VARCHAR(50) NOT NULL UNIQUE,
     purchase_date DATE NOT NULL,
-    total DECIMAL(10, 2) NOT NULL,
-    pdf_path VARCHAR(255) NOT NULL,
-    json_path VARCHAR(255) NOT NULL,
+	total DECIMAL(10, 2) NOT NULL,
     supplier_id INT NOT NULL,
-    user_id INT NOT NULL,
     company_id INT NOT NULL,
+ 	pdf_path VARCHAR(255) NOT NULL,
+    json_path VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (supplier_id) REFERENCES suppliers(id),
-    FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (company_id) REFERENCES company(id)
 );
 

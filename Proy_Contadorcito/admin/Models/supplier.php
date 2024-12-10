@@ -94,4 +94,14 @@ class Supplier extends Conf {
         }
 
     }
+
+    public function getAllSuppliers() {
+        $query = "SELECT id, supplierName FROM suppliers"; 
+        $result = $this->exec_query($query);
+        
+        if ($result) {
+            return $result->fetchAll(PDO::FETCH_ASSOC);
+        }
+        return [];
+    }
 }

@@ -116,4 +116,16 @@ class Company extends Conf
             return 0;
         }
     }
+
+    public function getAllCompanies() {
+        $query = "SELECT id, company_name FROM company"; 
+        $result = $this->exec_query($query);
+        
+        if ($result) {
+            return $result->fetchAll(PDO::FETCH_ASSOC);
+        }
+        return [];
+    }
+
+
 }

@@ -1,0 +1,14 @@
+{
+    "Nombre":"Charlas con un Cylon",
+    "Twitter":"@_rubenfa",
+    "Lenguajes": [
+        {
+            "Nombre":"C#",
+            "Entorno":".NET"
+        },
+        {
+            "Nombre":"Visual Basic",
+            "Entorno":".NET"
+        }
+    ]
+}
